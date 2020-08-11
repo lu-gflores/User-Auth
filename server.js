@@ -16,6 +16,8 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(cors({credentials: true, origin: process.env.CORS_ORIGIN}))
 
+require('./auth/auth')
+
 app.use('/', routes)
 app.use('/', passwordRoutes)
 

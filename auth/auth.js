@@ -11,9 +11,9 @@ passport.use('signup', new localStrategy.Strategy({
 
     const{ username } = req.body;
     if(username && username !== 'error') {
-        return done(null, {name: 'john'})
+        return done(null, {name: 'john'});
     } else {
-        return done( new Error('invalid user'))
+        return done(new Error('invalid user'), false);
     }
 })) 
 
@@ -22,11 +22,11 @@ passport.use('login', new localStrategy.Strategy({
     passwordField: 'password',
 }, (req, email, password, done) => {
     if(email !== 'john@test.com') {
-        return done(new Error('user not found'), false)
+        return done(new Error('user not found'), false);
     } 
 
     if(password !== 'test') {
-        return done(new Error('invalid password'), false)
+        return done(new Error('invalid password'), false);
     }
-    return done(null, {name:'john'})
+    return done(null, {name:'john'});
 })) 
