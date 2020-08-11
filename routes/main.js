@@ -26,7 +26,7 @@ router.post('/login', (req, res, next) => {
 
             req.login(user, {session: false }, (err) => {
                 if(err) return next(err);
-                return resizeBy.status(200).json({ user, status: 200})
+                return res.status(200).json({ user, status: 200})
             })
         } catch(err) {
             console.log(err)

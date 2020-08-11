@@ -20,7 +20,7 @@ passport.use('signup', new localStrategy.Strategy({
 passport.use('login', new localStrategy.Strategy({
     usernameField: 'email', 
     passwordField: 'password',
-}, (req, email, password, done) => {
+}, (email, password, done) => {
     if(email !== 'john@test.com') {
         return done(new Error('user not found'), false);
     } 
