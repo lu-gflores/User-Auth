@@ -4,11 +4,25 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
-
+const monogoose = require('mongoose')
 const routes = require('./routes/main');
 const passwordRoutes = require('./routes/password')
 
 const PORT = process.env.PORT || 8080;
+const uri = process.env.MONGO_CONNECTION_URL;
+const mongoConfig = {
+    useNewUrlParser:  true,
+    useCreateIndex: true,
+}
+
+monogoose.connect(uri, mongoConfig);
+monogoose.connection.on('error', (error)=> {
+    console.log(error)
+    process.exit(1)
+})
+monogoose.connection.on('connected',()=>{
+    console.log('connected to mongo')
+})
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}))
