@@ -15,13 +15,15 @@ const mongoConfig = {
     useCreateIndex: true,
 }
 
+if(process.env.MONGO_USER_NAME && process.env.MONGO_PASSWORD) {
+    mongoConfig.auth = {authSource: 'admin'}
+    mongoConfig.user = process.env.MONGO_USER_NAME
+    mongoConfig.pass = process.env.MONGO_PASSWORD
+}
 monogoose.connect(uri, mongoConfig);
 monogoose.connection.on('error', (error)=> {
     console.log(error)
     process.exit(1)
-})
-monogoose.connection.on('connected',()=>{
-    console.log('connected to mongo')
 })
 
 const app = express();
@@ -45,7 +47,10 @@ app.use((req, res, next) => {
     res.status(error.status || 500).json({ error: error.message, status: 500 })
 })
 
-app.listen(PORT, () => {
-    console.log('Listening on port ' + PORT)
-})
 
+monogoose.connection.on('connected',()=>{
+    console.log('connected to mongo')
+    app.listen(PORT, () => {
+        console.log('Listening on port ' + PORT)
+    })    
+})
