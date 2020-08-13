@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router() //new express router instance
-const UserModel = require('../models/ChatModel')
+const ChatModel = require('../models/ChatModel')
 
 router.post('/chat', async (req, res) => {
     if (!req.body || !req.body.message) {
