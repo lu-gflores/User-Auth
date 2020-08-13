@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser')
 const monogoose = require('mongoose')
 const routes = require('./routes/main');
 const passwordRoutes = require('./routes/password')
+const secureRoutes = require('./routes/secure')
+const passport = require('passport')
 
 const PORT = process.env.PORT || 8080;
 const uri = process.env.MONGO_CONNECTION_URL;
@@ -36,7 +38,7 @@ require('./auth/auth')
 
 app.use('/', routes)
 app.use('/', passwordRoutes)
-
+app.use('/',  passport.authenticate('jwt', { session: false }) , secureRoutes)
 //catch all other routes
 app.use((req, res) => {
     res.status(404).json({ message: '404 NOT FOUND', status: 404 })
