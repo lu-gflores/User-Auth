@@ -1,4 +1,32 @@
 const express = require('express')
+const hbs = require('nodemailer-express-handlebars')
+const nodemailer = require('nodemailer')
+const path = require('path')
+
+//storing email and password
+const email = process.env.EMAIL; 
+const password = process.env.PASSWORD;
+
+const smtpTransport = nodemailer.createTransport({
+    service: process.env.EMAIL_PROVIDER,
+    auth: {
+        user: email,
+        pass: password
+    }
+});
+
+const handlebarsOptions = {
+    viewEngine: {
+        extName: '.hbs',
+        partialsDir: './templates/',
+        layoutsDir: './templates/'
+    },
+    viewPath: path.resolve('./templates/'),
+    extName: '.html'
+}
+
+smtpTransport.use('compile', hbs(handlebarsOptions))
+
 const router = express.Router() //new express router instance
 
 router.post('/forgot-password', (req, res) => {
