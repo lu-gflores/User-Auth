@@ -60,31 +60,31 @@ router.post('/login', async (req, res, next) => {
 })
 
 router.post('/logout', (req, res) => {
-    if( req.cookies) {
-        const refreshToken =  req.cookies.refreshJwt;
-        if(refreshToken in tokenList) delete tokenList(refreshToken);
-        res.clearCookie('jwt')
-        res.clearCookie('refreshJwt')
-        
-    } 
+    if (req.cookies) {
+        const refreshToken = req.cookies.refreshJwt;
+        if (refreshToken in tokenList) delete tokenList(refreshToken);
+        res.clearCookie('jwt');
+        res.clearCookie('refreshJwt');
+
+    }
     res.status(200).json({ message: 'logged out', status: 200 })
 })
 
 router.post('/token', (req, res) => {
     const { refreshToken } = req.body;
-    if(refreshToken in tokenList) {
+    if (refreshToken in tokenList) {
         const body = {
             email: tokenList[refreshToken].email,
             _id: tokenList[refreshToken]._id,
             name: tokenList[refreshToken].name
         }
-        const token = jwt.sign({ user: body }, process.env.JWT_SECRET, { expiresIn: 300 })
+        const token = jwt.sign({ user: body }, process.env.JWT_SECRET, { expiresIn: 300 });
 
         res.cookie('jwt', token);
         tokenList[refreshToken].token = token;
-        res.status(200).json({token, status: 200});
-    } else{
-        res.status(401).json({ message: 'unauthorized', status: 401})
+        res.status(200).json({ token, status: 200 });
+    } else {
+        res.status(401).json({ message: 'unauthorized', status: 401 })
     }
 
 })
