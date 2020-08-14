@@ -27,6 +27,7 @@ monogoose.connection.on('error', (error)=> {
     console.log(error)
     process.exit(1)
 })
+monogoose.set('useFindAndModify', false)
 
 const app = express();
 app.use(bodyParser.urlencoded({extended: false}))
